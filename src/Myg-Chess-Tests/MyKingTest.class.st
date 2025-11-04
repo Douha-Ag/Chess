@@ -32,6 +32,14 @@ MyKingTest >> testIsNotCheckBySameColorRook [
 ]
 
 { #category : 'tests' }
+MyKingTest >> testKingCanMoveToSafeSquare [
+
+	| rook safeMoves board|
+	board := MyChessBoard empty.
+	board at: 'h8' put: (rook := MyRook black).
+]
+
+{ #category : 'tests' }
 MyKingTest >> testThreateningPieces [
 
 	| king board pairs |

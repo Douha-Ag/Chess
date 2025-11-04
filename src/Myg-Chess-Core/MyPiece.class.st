@@ -162,19 +162,19 @@ MyPiece >> legalTargetSquares [
 ]
 
 { #category : 'path commands' }
+MyPiece >> legalTargetSquaresInCheck [
+
+	^ self targetSquaresLegalInCheck: true
+]
+
+{ #category : 'path commands' }
 MyPiece >> moveTo: aSquare [
 
 	(self legalTargetSquares includes: aSquare) ifFalse: [ ^ self ].
 
 	square emptyContents.
 	square := aSquare.
-	aSquare contents: self
-]
-
-{ #category : 'path commands' }
-MyPiece >> ownKing [
-    ^ (self board pieces reject: [:p | p isNil])
-        detect: [:p | p isKing and: [ p color = self color ]]
+	aSquare contents: self.
 
 ]
 
@@ -209,6 +209,12 @@ MyPiece >> targetSquares [
 
 { #category : 'rendering' }
 MyPiece >> targetSquaresLegal: aBoolean [
+
+	self subclassResponsibility
+]
+
+{ #category : 'rendering' }
+MyPiece >> targetSquaresLegalInCheck: aBoolean [
 
 	self subclassResponsibility
 ]
