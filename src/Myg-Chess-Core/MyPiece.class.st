@@ -37,6 +37,21 @@ MyPiece >> board [
 	^ square board
 ]
 
+{ #category : 'accessing' }
+MyPiece >> canBlockThreatFrom: attackerSquare to: kingSquare on: targetSquare [
+    "Retourne true si la case targetSquare est sur la ligne entre attackerSquare et kingSquare,
+    peu importe le sens (haut/bas/gauche/droite/diagonale)."
+
+    | between1 between2 |
+
+    (attackerSquare isNil or: [kingSquare isNil or: [targetSquare isNil]]) ifTrue: [ ^ false ].
+
+    between1 := self squaresBetween: attackerSquare and: kingSquare.
+    between2 := self squaresBetween: kingSquare and: attackerSquare.
+
+    ^ (between1 , between2) anySatisfy: [:sq | sq = targetSquare]
+]
+
 { #category : 'rendering' }
 MyPiece >> collectSquares: aBlock [
 

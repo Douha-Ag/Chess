@@ -6,6 +6,24 @@ Class {
 }
 
 { #category : 'tests' }
+MyPieceTest >> testCanBlockThreatFromToOn [
+    | board attacker king piece result |
+
+    board := MyChessBoard empty.
+    attacker := board at: 'e8'.
+    king := board at: 'e1'.
+    piece := MyPawn new.
+
+    "Cas où la case est bien entre l'attaquant et le roi"
+    result := piece canBlockThreatFrom: attacker to: king on: (board at: 'e3').
+    self assert: result.
+
+    "Cas où la case n'est PAS sur la ligne"
+    result := piece canBlockThreatFrom: attacker to: king on: (board at: 'd3').
+    self deny: result.
+]
+
+{ #category : 'tests' }
 MyPieceTest >> testSquaresBetween [
     | board square1 square2 betweenSquares piece |
 
