@@ -193,6 +193,14 @@ MyPiece >> moveTo: aSquare [
 
 ]
 
+{ #category : 'accessing' }
+MyPiece >> ownKing [
+
+	
+		^ (self board pieces reject: [ :p | p isNil ]) detect: [ :p |
+			  p isKing and: [ p color = self color ] ] 
+]
+
 { #category : 'rendering' }
 MyPiece >> rightFile [
 
