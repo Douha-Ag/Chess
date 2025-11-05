@@ -55,3 +55,34 @@ MyPawn >> targetSquaresLegal: aBoolean [
 		  s notNil and: [
 			  s hasPiece not or: [ s contents color ~= color ] ] ]
 ]
+
+{ #category : 'rendering' }
+MyPawn >> targetSquaresLegalInCheck: aBoolean [
+    | king threats moves safeSquares |
+
+    king := self ownKing.
+    threats := king threateningPieces.
+
+    "Pas d'échec => mouvements normaux"
+    threats isEmpty ifTrue: [ ^ self targetSquaresLegal: aBoolean ].
+    
+    "Double échec => seul le roi peut bouger"
+    (threats size > 1 and: [ self isKing not ]) ifTrue: [ ^ OrderedCollection new ].
+
+    "Moves normaux + captures diagonales"
+    moves := OrderedCollection new.
+    (self targetSquaresLegal: aBoolean) ifNotNil: [ moves addAll: (self targetSquaresLegal: aBoolean) ].
+    (self diagonalCaptureSquares) ifNotNil: [ moves addAll: (self diagonalCaptureSquares) ].
+
+    "Un pion ne peut que capturer l'attaquant, pas bloquer"
+    safeSquares := moves select: [:sq |
+        threats anySatisfy: [:assoc |
+            | attacker attackerSquare |
+            attacker := assoc key.
+            attackerSquare := assoc value.
+            sq = attackerSquare  "Seulement la capture directe"
+        ]
+    ].
+
+    ^ safeSquares
+]
